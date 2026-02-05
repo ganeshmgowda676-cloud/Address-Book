@@ -1,0 +1,108 @@
+<!<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address Book</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+    crossorigin="anonymous">
+    <style>
+        body{
+            background: linear-gradient(to right,blue,red);
+            min-height: 100vh;
+        }
+        .card{
+            border-radius:15px;
+        }
+        .btn:hover{
+            background-color: rgb(131, 165, 165);
+             transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow p-4 mb-4">
+                    <h2 class="tect-center mb-4">Address book</h2>
+                    <!--Form-->
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <input type="text" id="name" class="form-control" placeholder="name">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="phone" class="form-control" placeholder="phone number">
+                        </div>
+                         <div class="col-md-6">
+                            <input type="text" id="email" class="form-control" placeholder="Email">
+                        </div>
+                          <div class="col-md-6">
+                            <input type="text" id="address" class="form-control" placeholder="address">
+                    </div>
+                    <div class="col shadow p-3">
+                        <button class= "btn btn-primary w-100" onclick="ascontact()">Add contact</button>
+       </div></div>     
+     </div>
+    <div class='card shadow p-3'>
+        <h4 class="text-center mb-3">Saved contacts</h4>
+        <table class="table table-bordered table-hover text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>name:</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="contactList"></tbody>
+        </table>
+    </div>
+       </div>
+    <script>
+        let contacts=JSON.parse(localStorage.getItem("contacts")) || [];
+
+        function displaycontacts()
+        {
+            let list=document.getElementById("contactList");
+            list.innerHTML="";
+
+            contacts.forEach((contacts,index)=>{
+                list.innerHTML +=`
+                <tr>
+                    <td>${contacts.name}</td>
+                    <td>${contacts.phone}</td>
+                    <td>${contacts.email}</td>
+                    <td>${contacts.address}</td>
+                    </tr>
+                    <button class="btn-danger btn-sm" onclick='deletecontact(${index})'>Delete</button>
+                    `;
+            });
+        }
+        function ascontact()
+        {
+            var name=document.getElementById("name").value;
+            var phone=document.getElementById("phone").value;
+            var email=document.getElementById("email").value;
+            var address=document.getElementById("address").value;
+
+            if(name==""||phone==""){
+                alert("fill the fields");
+                return;
+            }
+            contacts.push({name,phone,email,address});
+            localStorage.setItem("contacts",JSON.stringify(contacts));
+            document.querySelectorAll("input").forEach(input=>input.value="");
+            displaycontacts();
+         }
+        function deletecontact(index){
+           contacts.splice(index,1) ;
+           localStorage.setItem("contact",JSON.stringify(contacts));
+           displaceContacts();
+        }
+        displacecontacts();
+    </script>
+</body>
+</html>
